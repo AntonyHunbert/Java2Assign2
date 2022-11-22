@@ -7,7 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class PlayerHandler1 extends Thread{
+public class PlayerHandler1 extends Thread {
+
   //each playerHandler handles a game.
   private Socket player1;
   private InputStream is1;
@@ -38,45 +39,41 @@ public class PlayerHandler1 extends Thread{
 
     String fromPlayer = "";
 
-//    该线程用于处理player1的信息
+    //    该线程用于处理player1的信息
     new Thread(() -> {
       String toPlayer = "";
       String fp2 = "";
-      while (sc2.hasNextLine()){
-        if (playerTurn){
+      while (sc2.hasNextLine()) {
+        if (playerTurn) {
           System.out.println("wait for fp2...");
           fp2 = sc2.nextLine();
           System.out.println("fp2:" + fp2);
 
           //        由收到玩家2的消息开始启动游戏
           System.out.println("from player2:" + fp2);
-//        包装收到的信息，并提交给玩家1，此时需要判断，如果为11或10说明游戏结束，9说明开局
-//        如果游戏结束，需要结束线程？
+          //        包装收到的信息，并提交给玩家1，此时需要判断，如果为11或10说明游戏结束，9说明开局
+          //        如果游戏结束，需要结束线程？
           int playerContent = Integer.parseInt(fp2);
           int playerCode = playerContent % 10;
           int playStatus = playerContent / 10;
           System.out.println("play status: " + playStatus);
 
-          if(playStatus == 0){
-//          1代表游戏进行中，将玩家2落子的位置发给1
+          if (playStatus == 0) {
+            //  1代表游戏进行中，将玩家2落子的位置发给1
             toPlayer = "1@" + playerCode;
             pw1.println(toPlayer);
             pw1.flush();
             System.out.println("to player1: " + toPlayer);
             playerTurn = !playerTurn;
-          }
-          else if(playStatus == 1){
-//          0代表游戏进行中，1代表检测到自己胜利，2代表平局
+          } else if (playStatus == 1) {
+            //          0代表游戏进行中，1代表检测到自己胜利，2代表平局
             toPlayer = "2@" + playerCode;
             pw1.println(toPlayer);
             pw1.flush();
 
-          }
-          else {
-//          0代表游戏结束，10代表1检测到平局
+          } else {
+            //          0代表游戏结束，10代表1检测到平局
             toPlayer = "3@" + playerCode;
-//          pw2.println(toPlayer);
-//          pw2.flush();
             pw1.println(toPlayer);
             pw1.flush();
           }
@@ -88,35 +85,33 @@ public class PlayerHandler1 extends Thread{
     new Thread(() -> {
       String fp1 = "";
       String toPlayer = "";
-      while (sc1.hasNextLine()){
-        if (!playerTurn){
+      while (sc1.hasNextLine()) {
+        if (!playerTurn) {
           System.out.println("wait for fp1...");
           fp1 = sc1.nextLine();
-          System.out.println("fp1:"+ fp1);
+          System.out.println("fp1:" + fp1);
 
           //        由收到玩家1的消息开始启动游戏
           System.out.println("from player1:" + fp1);
 
-//        包装收到的信息，并提交给玩家1，此时需要判断，如果为9或10说明游戏结束
-//        如果游戏结束，需要结束线程？
+          //        包装收到的信息，并提交给玩家1，此时需要判断，如果为9或10说明游戏结束
+          //        如果游戏结束，需要结束线程？
           int playerContent = Integer.parseInt(fp1);
           int playerCode = playerContent % 10;
           int playStatus = playerContent / 10;
-          if(playStatus == 0){
-//          1代表游戏进行中，将玩家1落子的位置发给2，2处理后返回自己的落子
+          if (playStatus == 0) {
+            //          1代表游戏进行中，将玩家1落子的位置发给2，2处理后返回自己的落子
             toPlayer = "1@" + playerCode;
             pw2.println(toPlayer);
             pw2.flush();
             playerTurn = !playerTurn;
-          }
-          else if(playStatus == 1){
-//          0代表游戏进行中，1代表1检测到自己胜利
+          } else if (playStatus == 1) {
+            //          0代表游戏进行中，1代表1检测到自己胜利
             toPlayer = "2@" + playerCode;
             pw2.println(toPlayer);
             pw2.flush();
-          }
-          else {
-//          0代表游戏结束，10代表1检测到平局
+          } else {
+            //          0代表游戏结束，10代表1检测到平局
             toPlayer = "3@" + playerCode;
             pw2.println(toPlayer);
             pw2.flush();
@@ -125,48 +120,6 @@ public class PlayerHandler1 extends Thread{
         }
       }
     }).start();
-
-//     new Thread(() -> {
-//       String fp1 = "";
-//       String toPlayer = "";
-//       while (sc1.hasNextLine()){
-//         if (!playerTurn){
-//           System.out.println("wait for fp1...");
-//           fp1 = sc1.nextLine();
-//           System.out.println("fp1:"+ fp1);
-
-//           //        由收到玩家1的消息开始启动游戏
-//           System.out.println("from player1:" + fp1);
-
-// //        包装收到的信息，并提交给玩家1，此时需要判断，如果为9或10说明游戏结束
-// //        如果游戏结束，需要结束线程？
-//           int playerContent = Integer.parseInt(fp1);
-//           int playerCode = playerContent % 10;
-//           int playStatus = playerContent / 10;
-//           if(playStatus == 0){
-// //          1代表游戏进行中，将玩家1落子的位置发给2，2处理后返回自己的落子
-//             toPlayer = "1@" + playerCode;
-//             pw2.println(toPlayer);
-//             pw2.flush();
-//             playerTurn = !playerTurn;
-//           }
-//           else if(playStatus == 1){
-// //          0代表游戏进行中，1代表1检测到自己胜利
-//             toPlayer = "2@" + playerCode;
-//             pw2.println(toPlayer);
-//             pw2.flush();
-//           }
-//           else {
-// //          0代表游戏结束，10代表1检测到平局
-//             toPlayer = "3@" + playerCode;
-//             pw2.println(toPlayer);
-//             pw2.flush();
-//           }
-//           System.out.println("-----------------");
-//         }
-//       }
-//     }).start();
-
 
 
   }

@@ -75,13 +75,12 @@ public class Controller implements Initializable {
         String commandContent = fromServer.split("@")[1];
         System.out.println(commandContent);
         if (commandCode.equals("1")) {
-//           游戏进行中
+          //            游戏进行中
           if (commandContent.equals("9")) {
-//                开局，开始落子,落子结束后将currentPos传回服务器
+            //                开局，开始落子,落子结束后将currentPos传回服务器
             Platform.runLater(
                 () -> showNotice(
                     "game start, choose a position and place your chess:"));
-//                        System.out.println("game start, choose a position and put your chess:");
             game_panel.setOnMouseClicked(event -> {
               int x = (int) (event.getX() / BOUND);
               int y = (int) (event.getY() / BOUND);
@@ -110,9 +109,9 @@ public class Controller implements Initializable {
               }
 
             });
-//                        落子后判断当前棋局，返回值 = isEnd * 10 + currentPos
+            //                        落子后判断当前棋局，返回值 = isEnd * 10 + currentPos
           } else {
-//                局中，先根据对方的消息更新棋盘，并判断是否结束，若未结束，开始我的回合
+            //                局中，先根据对方的消息更新棋盘，并判断是否结束，若未结束，开始我的回合
             int i = Integer.parseInt(commandContent) / 3;
             int j = Integer.parseInt(commandContent) % 3;
             Platform.runLater(() -> {
@@ -152,19 +151,14 @@ public class Controller implements Initializable {
             });
           }
         } else {
-
-
-
           if (commandContent.equals("welcome!")) {
-//                进入房间，打开棋盘，返回我准备好了
+            //                进入房间，打开棋盘，返回我准备好了
             pw.println("9");
             pw.flush();
 
             System.out.println("open chessboard...");
-          }
-//            游戏结束，
-          else if (commandCode.equals("2")) {
-//                        更新局面，输了
+          } else if (commandCode.equals("2")) {
+            //                        更新局面，输了
             int i = Integer.parseInt(commandContent) / 3;
             int j = Integer.parseInt(commandContent) % 3;
             Platform.runLater(() -> {
@@ -181,10 +175,6 @@ public class Controller implements Initializable {
                 TURN = !TURN;
               }
             });
-
-
-
-            
             Platform.runLater(() -> showNotice("draw!!!"));
           }
 
@@ -209,8 +199,8 @@ public class Controller implements Initializable {
   }
 
   private int judgeEnd() {
-//        终局共9种情况，其中一种为平
-//        0: 未到终局  1: 我方胜利  2: 平局
+    //        终局共9种情况，其中一种为平
+    //        0: 未到终局  1: 我方胜利  2: 平局
     for (int i = 0; i < chessBoard.length; i++) {
       int chessSum = chessBoard[i][0] + chessBoard[i][1] + chessBoard[i][2];
       if (flag[i][0] && flag[i][1] && flag[i][2] && (chessSum == 3 || chessSum == 6)) {
@@ -231,7 +221,7 @@ public class Controller implements Initializable {
     if (flag[0][2] && flag[1][1] && flag[2][0] && (chessSum == 3 || chessSum == 6)) {
       return 1;
     }
-//        平局判定
+    //        平局判定
     boolean isFull = true;
     for (int i = 0; i < chessBoard.length; i++) {
       for (int j = 0; j < chessBoard.length; j++) {
@@ -244,7 +234,6 @@ public class Controller implements Initializable {
     return 0;
   }
 
-//
 
   private void drawChess() {
     for (int i = 0; i < chessBoard.length; i++) {
